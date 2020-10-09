@@ -3,9 +3,17 @@ import serial
 import time
 import sys
 import cv2
+import serial.tools.list_ports
 
-#Silakan sesuaikan dengan port COM yang digunakan
-ard = serial.Serial('COM4', 9600) 
+#fungsi u/ autodetect serial
+def autodetectserial():
+    ports = list(serial.tools.list_ports.comports())
+    for p in ports:
+        #print (p)
+        if 'USB-SERIAL CH340' or 'USB2.0-Serial' in p.description:#USB-SERIAL CH340 u/ windows (Check Driver name pada Device Manager), USB2.0-Serial u/ Linux Based. 
+            return p.device
+        
+ard = serial.Serial(autodetectserial(), 9600) 
 time.sleep(2)
 print("Connected to arduino...")
 
